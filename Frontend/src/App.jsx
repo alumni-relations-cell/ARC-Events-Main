@@ -5,7 +5,7 @@ import "./App.css";
 import Home from "./pages/main/home";                  // ORIGINAL Home Page
 import EventList from "./pages/main/EventList";        // New Event Directory (Optional)
 import Registration from "./pages/main/registeration"; // New Registration Form
-import EventFlow from "./pages/main/EventFlow.jsx";     
+import EventFlow from "./pages/main/EventFlowpage.jsx";     
 import PhotoGallery from "./pages/main/memories";      // Memories (Handles both Directory & Specific)
 import UserLogin from "./pages/main/userlogin";
 import Meetourteam from "./pages/main/meetourteam";
@@ -83,7 +83,7 @@ function App() {
         <Route path="/meetourteam" element={<Meetourteam />} />
 
         {/* 4. TIMELINE (Two Modes) */}
-        <Route path="/eventFlow" element={<EventFlow />} />             {/* Navbar Link -> Directory */}
+        <Route path="/eventFlow" element={<EventFlow/>} />             {/* Navbar Link -> Directory */}
         <Route path="/event/:eventSlug/flow" element={<EventFlow />} /> {/* Specific Event */}
 
         {/* 5. MEMORIES (Two Modes) */}
