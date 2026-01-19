@@ -1,17 +1,34 @@
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { useParams } from "react-router-dom";
 import Masonry from "react-masonry-css";
 import { X, ChevronLeft, ChevronRight, ArrowLeft, Image as ImageIcon } from "lucide-react";
 import { apiUser } from "../../lib/apiUser";
 import LazyImage from "../../components/LazyImage";
+import { useEventLock } from "../../context/EventLockContext";
 
 const PAGE_SIZE = 24;
 
 export default function PhotoGallery() {
+  const { eventSlug } = useParams();
+  const { isLocked, eventData } = useEventLock();
+
   // --- STATE: MODE SWITCHING ---
   // If null, show Event List. If set, show Gallery for that event.
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [eventsList, setEventsList] = useState([]);
   const [isLoadingEvents, setIsLoadingEvents] = useState(true);
+
+  // Auto-select event if locked or slug provided
+  useEffect(() => {
+    if (isLocked && eventData) {
+      setSelectedEvent(eventData);
+    } else if (eventSlug && !selectedEvent) {
+      // If valid slug in URL but not locked (direct access), set minimal event data
+      // We might want to fetch full details, but for now assuming slug is enough or finding from list
+      setSelectedEvent({ slug: eventSlug, name: "Event Memories" });
+      // Note: fetching full details for name would be better, but this solves the immediate navigation
+    }
+  }, [isLocked, eventData, eventSlug]);
 
   // --- STATE: GALLERY INTERNALS ---
   const [photos, setPhotos] = useState([]);
@@ -223,20 +240,8 @@ export default function PhotoGallery() {
   // VIEW 2: PHOTO GALLERY (Masonry)
   // =========================================================
   return (
-    <div className="min-h-screen bg-gray-950 p-4 pt-24">
-      {/* Header Bar */}
-      <div className="max-w-[1800px] mx-auto mb-8 flex items-center gap-4">
-        <button
-          onClick={() => setSelectedEvent(null)}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition bg-gray-900 px-4 py-2 rounded-lg border border-gray-800 hover:border-gray-700"
-        >
-          <ArrowLeft size={16} /> Back to Events
-        </button>
-        <div>
-          <h2 className="text-2xl font-bold text-white">{selectedEvent.name}</h2>
-          <p className="text-xs text-gray-500">{photos.length} Photos</p>
-        </div>
-      </div>
+    <div className="min-h-screen bg-gray-950 pt-20">
+      {/* Header Removed as requested - no back button, no title */}
 
       {/* Empty State */}
       {photos.length === 0 ? (

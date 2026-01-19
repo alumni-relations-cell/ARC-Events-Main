@@ -206,7 +206,7 @@ function GalleryGrid({ images, onDelete, loading }) {
       {images.map(img => (
         <div key={img._id} className="group relative bg-gray-900 rounded-xl overflow-hidden border border-gray-800 transition hover:scale-[1.02]">
           <img src={img.url} className="w-full h-48 object-cover" alt="Gallery" />
-          <div className="absolute inset-x-0 bottom-0 p-4 opacity-0 group-hover:opacity-100 transition flex justify-end bg-gradient-to-t from-black/80 via-transparent">
+          <div className="absolute inset-x-0 bottom-0 p-4 flex justify-end bg-gradient-to-t from-black/80 via-transparent">
             <button
               onClick={() => onDelete(img._id)}
               className="bg-red-600 text-white p-2 rounded-lg shadow hover:bg-red-700"

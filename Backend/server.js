@@ -17,6 +17,7 @@ import "./models/Controller.js";
 import "./models/Admin.js";
 import "./models/User.js";
 import "./models/Memory.js";
+import "./models/EventLock.js";
 
 /* ================== ROUTES ================== */
 import googleAuthRoutes from "./routes/googleAuth.routes.js";
@@ -29,6 +30,7 @@ import adminControllerRoutes from "./routes/adminController.routes.js";
 import adminEventScopedRoutes from "./routes/adminEventScoped.routes.js";
 import adminGlobalGalleryRoutes from "./routes/adminGlobalGallery.routes.js";
 import controllerDashboardRoutes from "./routes/controllerDashboard.routes.js";
+import lockRoutes from "./routes/lock.routes.js";
 
 /* ================== APP INIT ================== */
 const app = express();
@@ -61,6 +63,7 @@ app.use((req, _res, next) => {
 app.use("/api/auth", googleAuthRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/images", publicImagesRoutes);
+app.use("/api/locks", lockRoutes);
 
 // Controller Auth
 app.use("/api/controller/auth", controllerAuthRoutes); // MOUNTED HERE

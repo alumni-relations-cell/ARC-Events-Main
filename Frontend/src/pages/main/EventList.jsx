@@ -87,9 +87,20 @@ export default function EventList() {
                   <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-90"></div>
 
                   {/* Status Badge */}
-                  <div className="absolute top-4 right-4 bg-green-500/10 border border-green-500/20 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                    <span className="text-xs font-bold text-green-400 tracking-wide uppercase">Live</span>
+                  <div className={`absolute top-4 right-4 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-2 border ${ev.status === 'LIVE' ? 'bg-green-500/10 border-green-500/20' :
+                    ev.status === 'PAUSED' ? 'bg-orange-500/10 border-orange-500/20' :
+                      'bg-red-500/10 border-red-500/20'
+                    }`}>
+                    <div className={`w-2 h-2 rounded-full animate-pulse ${ev.status === 'LIVE' ? 'bg-green-500' :
+                      ev.status === 'PAUSED' ? 'bg-orange-500' :
+                        'bg-red-500'
+                      }`}></div>
+                    <span className={`text-xs font-bold tracking-wide uppercase ${ev.status === 'LIVE' ? 'text-green-400' :
+                      ev.status === 'PAUSED' ? 'text-orange-400' :
+                        'text-red-400'
+                      }`}>
+                      {ev.status}
+                    </span>
                   </div>
                 </div>
 

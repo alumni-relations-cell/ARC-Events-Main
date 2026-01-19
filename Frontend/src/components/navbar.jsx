@@ -14,7 +14,9 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { Link, useLocation, useParams } from "react-router-dom";
+import { useEventLock } from "../context/EventLockContext";
 
 /* -------- Base pages -------- */
 const basePages = [
@@ -97,18 +99,34 @@ export default function ResponsiveAppBar() {
   const showDefaultIcon = !avatarSrc;
   const appBarHeight = 64;
 
-  /* Build pages dynamically */
-  const pages = basePages.map((p) => {
-    if (p.path === "my-registrations" || p.path === "events") {
+  const { isLocked, eventData } = useEventLock();
+
+  /* Build pages dynamically based on lock state */
+  const pages = React.useMemo(() => {
+    // In locked mode, show event-specific navigation
+    if (isLocked && eventData?.slug) {
+      const lockedEventSlug = eventData.slug;
+      return [
+        { name: "Home", path: "/" },
+        { name: "Timeline", path: `/event/${lockedEventSlug}/flow` },
+        { name: "Memories", path: `/event/${lockedEventSlug}/memories` },
+        { name: "Register", path: `/event/${lockedEventSlug}/register` },
+      ];
+    }
+
+    // Normal mode - existing logic
+    return basePages.map((p) => {
+      if (p.path === "my-registrations" || p.path === "events") {
+        return { ...p, path: `/${p.path}` };
+      }
+
+      if (isEventMode) {
+        return { ...p, path: `/event/${eventSlug}/${p.path}`.replace(/\/$/, "") };
+      }
+
       return { ...p, path: `/${p.path}` };
-    }
-
-    if (isEventMode) {
-      return { ...p, path: `/event/${eventSlug}/${p.path}`.replace(/\/$/, "") };
-    }
-
-    return { ...p, path: `/${p.path}` };
-  });
+    });
+  }, [isEventMode, eventSlug, isLocked, eventData]);
 
   return (
     <>
@@ -151,16 +169,35 @@ export default function ResponsiveAppBar() {
                 >
                   {greeting}
                 </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto",
-                    fontWeight: 500,
-                    fontSize: "0.72rem",
-                    color: "rgba(255,255,255,0.6)",
-                  }}
-                >
-                  {user ? "You are signed in" : "Please sign in to register"}
-                </Typography>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto",
+                      fontWeight: 500,
+                      fontSize: "0.72rem",
+                      color: "rgba(255,255,255,0.6)",
+                    }}
+                  >
+                    {user ? "You are signed in" : "Please sign in to register"}
+                  </Typography>
+                  {user && (
+                    <IconButton
+                      onClick={() => {
+                        localStorage.removeItem("app_auth");
+                        setUser(null);
+                        window.dispatchEvent(new Event("storage"));
+                      }}
+                      size="small"
+                      sx={{
+                        ml: 0.5,
+                        color: "#ff6b6b",
+                        "&:hover": { backgroundColor: "rgba(255, 107, 107, 0.1)" }
+                      }}
+                    >
+                      <LogoutIcon fontSize="small" style={{ width: 16, height: 16 }} />
+                    </IconButton>
+                  )}
+                </Box>
               </Box>
             </Box>
 

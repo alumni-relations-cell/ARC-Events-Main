@@ -235,7 +235,7 @@ export default function Registration() {
             compressed: formatFileSize(compressedFile.size),
             ratio: ratio
           });
-          toast.success(`✅ Image compressed by ${ratio}%`);
+          // toast.success(`✅ Image compressed by ${ratio}%`);
         } catch (error) {
           console.error('Compression failed:', error);
           toast.error('Failed to compress image, using original');
@@ -342,12 +342,56 @@ export default function Registration() {
   }
 
   // Guard: Event Not Found or Closed
-  if (!event || (event.status !== "LIVE" && event.status !== "DRAFT")) {
+  if (!event) {
     return (
       <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 text-center">
         <FaExclamationTriangle className="text-5xl text-yellow-500 mb-4" />
         <h2 className="text-3xl font-bold text-white mb-2">Event Not Available</h2>
-        <p className="text-gray-400 mb-6">This event is either closed, paused, or does not exist.</p>
+        <p className="text-gray-400 mb-6">This event does not exist or has been removed.</p>
+        <Link to="/" className="px-6 py-2 bg-indigo-600 rounded text-white font-bold hover:bg-indigo-700">Go Home</Link>
+      </div>
+    );
+  }
+
+  // Guard: PAUSED (Offline Registration Only)
+  if (event.status === "PAUSED") {
+    return (
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mb-6">
+          <FaExclamationTriangle className="text-3xl text-orange-500" />
+        </div>
+        <h2 className="text-3xl font-bold text-white mb-2">Registration Closed</h2>
+        <p className="text-gray-400 mb-6 max-w-md">
+          Registration is officially closed. You can complete registration offline at campus. Please visit the campus registration desk to register.
+        </p>
+        <Link to="/events" className="px-6 py-2 bg-gray-800 border border-gray-700 rounded text-white font-bold hover:bg-gray-700 transition">View Other Events</Link>
+      </div>
+    );
+  }
+
+  // Guard: CLOSED (Event Over)
+  if (event.status === "CLOSED") {
+    return (
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mb-6">
+          <FaExclamationTriangle className="text-3xl text-red-500" />
+        </div>
+        <h2 className="text-3xl font-bold text-white mb-2">Event Closed</h2>
+        <p className="text-gray-400 mb-6 max-w-md">
+          This event is now closed. No new registrations are being accepted.
+        </p>
+        <Link to="/events" className="px-6 py-2 bg-gray-800 border border-gray-700 rounded text-white font-bold hover:bg-gray-700 transition">View Other Events</Link>
+      </div>
+    );
+  }
+
+  // Guard: DRAFT (Should not be accessible normally)
+  if (event.status !== "LIVE") {
+    return (
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 text-center">
+        <FaExclamationTriangle className="text-5xl text-yellow-500 mb-4" />
+        <h2 className="text-3xl font-bold text-white mb-2">Event Not Live</h2>
+        <p className="text-gray-400 mb-6">This event is not currently accepting public registrations.</p>
         <Link to="/" className="px-6 py-2 bg-indigo-600 rounded text-white font-bold hover:bg-indigo-700">Go Home</Link>
       </div>
     );
@@ -510,22 +554,24 @@ export default function Registration() {
           {/* Basic Info */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Full Name</label>
+              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Full Name <span className="text-red-500">*</span></label>
               <input
                 name="name"
                 value={formData.name}
                 onChange={handleChange}
+                required
                 className={`w-full bg-gray-950 border ${errors.name ? 'border-red-500' : 'border-gray-700'} rounded p-3 text-white focus:border-indigo-500 outline-none transition`}
               />
               {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
             </div>
             <div>
-              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Batch Year</label>
+              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Batch Year <span className="text-red-500">*</span></label>
               <input
                 name="batch"
                 placeholder="e.g. 2018"
                 value={formData.batch}
                 onChange={handleChange}
+                required
                 className={`w-full bg-gray-950 border ${errors.batch ? 'border-red-500' : 'border-gray-700'} rounded p-3 text-white focus:border-indigo-500 outline-none transition`}
               />
               {errors.batch && <p className="text-red-500 text-xs mt-1">{errors.batch}</p>}
@@ -534,22 +580,25 @@ export default function Registration() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Mobile Number</label>
+              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Mobile Number <span className="text-red-500">*</span></label>
               <input
                 name="contact"
                 placeholder="10 digit number"
                 value={formData.contact}
                 onChange={handleChange}
+                required
                 className={`w-full bg-gray-950 border ${errors.contact ? 'border-red-500' : 'border-gray-700'} rounded p-3 text-white focus:border-indigo-500 outline-none transition`}
               />
               {errors.contact && <p className="text-red-500 text-xs mt-1">{errors.contact}</p>}
             </div>
             <div>
-              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Email</label>
+              <label className="block text-gray-400 text-xs uppercase font-bold mb-2">Email <span className="text-red-500">*</span></label>
               <input
                 name="email"
+                type="email"
                 value={formData.email}
                 onChange={handleChange}
+                required
                 className={`w-full bg-gray-950 border ${errors.email ? 'border-red-500' : 'border-gray-700'} rounded p-3 text-white focus:border-indigo-500 outline-none transition`}
               />
               {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}

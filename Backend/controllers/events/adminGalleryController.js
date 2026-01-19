@@ -28,12 +28,12 @@ export const uploadPhoto = async (req, res) => {
         if (!req.file) return res.status(400).json({ message: "No image provided" });
 
         // Upload to Cloudinary
-        const resultUrl = await new Promise((resolve, reject) => {
+        const result = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 { folder: "event_gallery" },
                 (error, result) => {
                     if (error) reject(error);
-                    else resolve(result.secure_url);
+                    else resolve(result); // Return full result
                 }
             );
             stream.Readable.from(req.file.buffer).pipe(uploadStream);
@@ -41,7 +41,8 @@ export const uploadPhoto = async (req, res) => {
 
         // Add to Gallery
         event.gallery.push({
-            url: resultUrl,
+            url: result.secure_url,
+            public_id: result.public_id, // Save public_id
             caption: req.body.caption || ""
         });
 
@@ -62,6 +63,14 @@ export const deletePhoto = async (req, res) => {
         const event = await Event.findById(req.params.id);
         if (!event) return res.status(404).json({ message: "Event not found" });
 
+        // Find the photo
+        const photo = event.gallery.find(p => p._id.toString() === req.params.photoId);
+
+        if (photo && photo.public_id) {
+            // Delete from Cloudinary
+            await cloudinary.uploader.destroy(photo.public_id);
+        }
+
         // Remove from array
         event.gallery = event.gallery.filter(
             (img) => img._id.toString() !== req.params.photoId
@@ -70,6 +79,7 @@ export const deletePhoto = async (req, res) => {
         await event.save();
         res.json(event.gallery);
     } catch (error) {
+        console.error("Delete Error:", error);
         res.status(500).json({ message: "Delete failed" });
     }
 };

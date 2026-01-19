@@ -4,11 +4,26 @@ import Event from "../../models/Event.js";
    1. GET ALL "LIVE" EVENTS (Public Directory)
    - Used for Home Page / Event Directory
    - Filters out DRAFT, PAUSED, CLOSED, HIDDEN, DELETED
+   - Lock-aware: Returns only locked event if lock is active
 ---------------------------------------------------- */
 export async function getEvents(req, res) {
   try {
+    // If locked, return only the locked event
+    if (req.isLocked && req.lockedEventId) {
+      const event = await Event.findById(req.lockedEventId)
+        .select("name slug posterUrl status paid description");
+
+      if (!event) {
+        return res.status(404).json({ message: "Locked event not found" });
+      }
+
+      // Return as array for consistency with normal response
+      return res.json([event]);
+    }
+
+    // Normal mode: return all visible events (exclude DRAFT)
     const events = await Event.find({
-      status: "LIVE",
+      status: { $in: ["LIVE", "PAUSED", "CLOSED"] },
       isHidden: false,
       isDeleted: false,
     })
@@ -25,10 +40,17 @@ export async function getEvents(req, res) {
 /* ----------------------------------------------------
    2. GET SINGLE EVENT BY SLUG (Full Details)
    - Used for Registration Page logic
+   - Lock-aware: Validates slug matches locked event
 ---------------------------------------------------- */
 export async function getEventBySlug(req, res) {
   try {
     const { slug } = req.params;
+
+    // If locked, verify slug matches locked event
+    if (req.isLocked && slug !== req.lockedEventSlug) {
+      return res.status(403).json({ message: "Access to this event is restricted" });
+    }
+
     const event = await Event.findOne({ slug, isDeleted: false });
 
     if (!event) {
@@ -45,10 +67,16 @@ export async function getEventBySlug(req, res) {
 /* ----------------------------------------------------
    3. GET EVENT FLOW (Timeline Only) - NEW FUNCTION
    - Used for the Timeline/Flow Page
+   - Lock-aware: Validates slug matches locked event
 ---------------------------------------------------- */
 export async function getEventFlow(req, res) {
   try {
     const { slug } = req.params;
+
+    // If locked, verify slug matches locked event
+    if (req.isLocked && slug !== req.lockedEventSlug) {
+      return res.status(403).json({ message: "Access to this event is restricted" });
+    }
 
     // Find event by slug, return ONLY name and flow array
     const event = await Event.findOne({ slug, isDeleted: false })
@@ -68,10 +96,17 @@ export async function getEventFlow(req, res) {
 /* ----------------------------------------------------
    4. GET EVENT MEMORIES (Gallery)
    - Used for the Public Gallery Page
+   - Lock-aware: Validates slug matches locked event
 ---------------------------------------------------- */
 export async function getEventMemories(req, res) {
   try {
     const { slug } = req.params;
+
+    // If locked, verify slug matches locked event
+    if (req.isLocked && slug !== req.lockedEventSlug) {
+      return res.status(403).json({ message: "Access to this event is restricted" });
+    }
+
     const event = await Event.findOne({ slug, isDeleted: false }).select("gallery");
 
     if (!event) {

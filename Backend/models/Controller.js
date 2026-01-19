@@ -11,6 +11,11 @@ const ControllerSchema = new mongoose.Schema({
   approvedEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
 
   active: { type: Boolean, default: false }, // Pending approval by admin
+  status: {
+    type: String,
+    enum: ["PENDING", "ACTIVE", "REJECTED"],
+    default: "PENDING"
+  },
   approvedByAdmin: { type: mongoose.Schema.Types.ObjectId, ref: "Admin" }
 }, { timestamps: true });
 

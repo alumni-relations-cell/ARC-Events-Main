@@ -19,6 +19,7 @@ import {
 
 import requireUser from "../middleware/requireUser.js";
 import eventLock from "../middleware/eventLock.js";
+import lockAware from "../middleware/lockAware.js";
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -31,15 +32,16 @@ router.get("/registrations/mine", requireUser, getMyAllRegistrations);
 
 /* ===========================================
    2. PUBLIC EVENT ROUTES
+   Lock-aware middleware applied
    =========================================== */
-router.get("/ongoing", getEvents);
-router.get("/:slug/flow", getEventFlow);
-router.get("/:slug/memories", getEventMemories);
+router.get("/ongoing", lockAware, getEvents);
+router.get("/:slug/flow", lockAware, getEventFlow);
+router.get("/:slug/memories", lockAware, getEventMemories);
 
 /* ===========================================
    3. SINGLE EVENT DETAILS
    =========================================== */
-router.get("/:slug", getEventBySlug);
+router.get("/:slug", lockAware, getEventBySlug);
 
 /* ===========================================
    4. REGISTRATION ACTIONS

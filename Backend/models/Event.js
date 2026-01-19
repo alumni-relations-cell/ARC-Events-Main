@@ -34,6 +34,7 @@ const EventSchema = new mongoose.Schema({
 
   gallery: [{
     url: String,
+    public_id: String,
     caption: String,
     uploadedAt: { type: Date, default: Date.now }
   }],

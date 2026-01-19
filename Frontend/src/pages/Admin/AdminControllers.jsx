@@ -7,17 +7,20 @@ import { UserCheck, UserX, Shield, Calendar } from "lucide-react";
 export default function AdminControllers() {
   const [pending, setPending] = useState([]);
   const [active, setActive] = useState([]);
+  const [rejected, setRejected] = useState([]);
   const { events } = useAdminEvent();
   const [selections, setSelections] = useState({});
 
   const loadData = async () => {
     try {
-      const [pRes, aRes] = await Promise.all([
+      const [pRes, aRes, rRes] = await Promise.all([
         apiAdmin.get("/api/admin/controllers/pending"),
-        apiAdmin.get("/api/admin/controllers")
+        apiAdmin.get("/api/admin/controllers"),
+        apiAdmin.get("/api/admin/controllers/rejected")
       ]);
       setPending(pRes.data);
       setActive(aRes.data);
+      setRejected(rRes.data);
     } catch {
       // Silent fail
     }
@@ -35,6 +38,27 @@ export default function AdminControllers() {
       setSelections({});
     } catch {
       toast.error("Approval failed.");
+    }
+  };
+
+  const handleReject = async (id) => {
+    if (!window.confirm("Reject this controller request?")) return;
+    try {
+      await apiAdmin.post(`/api/admin/controllers/${id}/reject`);
+      toast.success("Controller rejected");
+      loadData();
+    } catch {
+      toast.error("Failed to reject.");
+    }
+  };
+
+  const handleRevert = async (id) => {
+    try {
+      await apiAdmin.post(`/api/admin/controllers/${id}/revert`);
+      toast.success("Reverted to pending");
+      loadData();
+    } catch {
+      toast.error("Failed to revert.");
     }
   };
 
@@ -130,8 +154,8 @@ export default function AdminControllers() {
                               <label
                                 key={ev._id}
                                 className={`flex items-start gap-3 p-3 rounded-lg cursor-pointer transition-all ${isSelected
-                                    ? 'bg-indigo-600/20 border-2 border-indigo-500'
-                                    : 'bg-gray-900 border-2 border-gray-800 hover:border-gray-700'
+                                  ? 'bg-indigo-600/20 border-2 border-indigo-500'
+                                  : 'bg-gray-900 border-2 border-gray-800 hover:border-gray-700'
                                   }`}
                               >
                                 <input
@@ -159,18 +183,57 @@ export default function AdminControllers() {
                         <p className="text-xs text-gray-500">
                           {selectedEvents.length} event{selectedEvents.length !== 1 ? 's' : ''} selected
                         </p>
-                        <button
-                          onClick={() => handleApprove(c._id, selectedEvents)}
-                          className="bg-green-600 hover:bg-green-500 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg transition flex items-center gap-2"
-                        >
-                          <UserCheck className="h-4 w-4" /> Approve Controller
-                        </button>
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => handleReject(c._id)}
+                            className="bg-red-900/30 hover:bg-red-900/50 text-red-400 px-4 py-2.5 rounded-lg font-bold border border-red-900/50 transition flex items-center gap-2"
+                          >
+                            <UserX className="h-4 w-4" /> Reject
+                          </button>
+                          <button
+                            onClick={() => handleApprove(c._id, selectedEvents)}
+                            className="bg-green-600 hover:bg-green-500 text-white px-6 py-2.5 rounded-lg font-bold shadow-lg transition flex items-center gap-2"
+                          >
+                            <UserCheck className="h-4 w-4" /> Approve Controller
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               );
             })}
+          </div>
+        )}
+      </section>
+
+      {/* REJECTED REQUESTS */}
+      <section>
+        <h2 className="text-xl font-semibold text-red-400 mb-4 flex items-center gap-2">
+          <UserX className="h-5 w-5" /> Rejected Requests ({rejected.length})
+        </h2>
+
+        {rejected.length > 0 && (
+          <div className="grid gap-6">
+            {rejected.map(c => (
+              <div key={c._id} className="bg-gray-900/50 p-6 rounded-xl border border-red-900/30 opacity-70 hover:opacity-100 transition">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-xs text-red-400 uppercase tracking-wider font-bold mb-1">Rejected Applicant</p>
+                    <p className="text-xl font-bold text-gray-400">@{c.username}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      Requested: {c.requestedEvents?.map(e => e.name).join(", ") || "None"}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleRevert(c._id)}
+                    className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-lg font-bold border border-gray-700 transition flex items-center gap-2"
+                  >
+                    <UserCheck className="h-4 w-4" /> Revert to Pending
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         )}
       </section>
@@ -206,8 +269,8 @@ export default function AdminControllers() {
                         }
                       }}
                       className={`p-2 rounded transition ${isEditing
-                          ? 'bg-gray-700 text-gray-300'
-                          : 'text-indigo-400 bg-indigo-400/10 hover:bg-indigo-400/20'
+                        ? 'bg-gray-700 text-gray-300'
+                        : 'text-indigo-400 bg-indigo-400/10 hover:bg-indigo-400/20'
                         }`}
                       title={isEditing ? "Cancel" : "Edit Events"}
                     >

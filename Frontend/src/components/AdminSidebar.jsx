@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { useAdminEvent } from "../context/AdminEventContext";
-import { FaBars, FaTimes, FaHome, FaCalendar, FaUsers, FaImages, FaUserShield, FaSignOutAlt } from "react-icons/fa";
+import { FaBars, FaTimes, FaHome, FaCalendar, FaUsers, FaImages, FaUserShield, FaSignOutAlt, FaLink } from "react-icons/fa";
 
 export default function AdminSidebar() {
   const { events, activeEvent, setActiveEvent } = useAdminEvent();
@@ -78,6 +78,15 @@ export default function AdminSidebar() {
             <h2 className="text-2xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
               ARC Admin
             </h2>
+            {/* Logout button for desktop/mobile in header */}
+            <button
+              onClick={handleLogout}
+              className="text-red-400 hover:text-red-300 p-2 transition-colors flex items-center gap-2"
+              title="Logout"
+            >
+              <FaSignOutAlt size={20} />
+            </button>
+
             {/* Close button for mobile */}
             <button
               onClick={closeMobileMenu}
@@ -155,26 +164,19 @@ export default function AdminSidebar() {
             <span>Controllers</span>
           </NavLink>
 
+
+
           <NavLink
-            to="/admin/home"
+            to="/admin/locks"
             className={link}
             onClick={closeMobileMenu}
           >
-            <FaHome size={18} />
-            <span>Home Manager</span>
+            <FaLink size={18} />
+            <span>Event Locks</span>
           </NavLink>
         </nav>
 
-        {/* Logout Button */}
-        <div className="p-4 border-t border-gray-800">
-          <button
-            onClick={handleLogout}
-            className="w-full bg-red-600 hover:bg-red-700 p-3 rounded-lg font-semibold flex items-center justify-center gap-3 transition-all active:scale-95"
-          >
-            <FaSignOutAlt size={18} />
-            <span>Logout</span>
-          </button>
-        </div>
+
       </aside>
     </>
   );
