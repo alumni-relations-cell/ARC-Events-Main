@@ -90,7 +90,9 @@ export default function AdminLockManager() {
             });
 
             if (res.data.success) {
-                setGeneratedUrl(res.data.url);
+                // Construct URL using current origin to ensure it matches deployed/local environment
+                const origin = window.location.origin;
+                setGeneratedUrl(`${origin}/lock/${res.data.lock.token}`);
                 showSnackbar("Lock link generated successfully!");
                 fetchLocks(); // Refresh list
 
