@@ -95,7 +95,7 @@ function App() {
     <EventLockProvider>
       {!hideNavAndFooter && <ResponsiveAppBar />}
 
-      <div className={!hideNavAndFooter ? "pt-[90px] md:pt-0" : ""}>
+      <div className={!hideNavAndFooter ? "pt-[90px]" : ""}>
         <LockAwareRoute>
           <Routes>
 

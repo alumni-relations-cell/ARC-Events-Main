@@ -131,12 +131,12 @@ export default function ResponsiveAppBar() {
   return (
     <>
       <AppBar
-        position={isDesktop ? "sticky" : "fixed"}
+        position="fixed"
         sx={{
           backgroundColor: "#ffffff",
-          boxShadow: "0px 2px 4px rgba(0,0,0,0.05)",
+          boxShadow: "10px 30px 40px #ca0002)",
           zIndex: theme.zIndex.appBar,
-          borderBottom: "2px solid #ca0002",
+          borderBottom: "4px solid #ca0002 ",
         }}
       >
         <Container maxWidth="xl">
@@ -155,7 +155,7 @@ export default function ResponsiveAppBar() {
               <img
                 src="/assets/arc-logo.png"
                 alt="ARC Logo"
-                style={{ height: 60, display: "block" }}
+                style={{ height: 55, display: "block" }}
               />
             </Box>
 
@@ -248,7 +248,7 @@ export default function ResponsiveAppBar() {
           flexDirection: "column",
           alignItems: "center",
           px: 2,
-          pt: `100px`, // To clear the taller navbar
+          pt: `100x`, // To clear the taller navbar
           pb: 4,
           gap: 2,
           transform: mobileOpen ? "translateY(0)" : "translateY(-100%)",

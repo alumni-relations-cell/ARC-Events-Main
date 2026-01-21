@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./home.css";
 import { FaClipboardList, FaRegCalendarAlt, FaImage, FaUsers } from "react-icons/fa";
 import { api } from "../../lib/api";
+import { useEventLock } from "../../context/EventLockContext";
 
 /* ---------------- Cloudinary helpers ---------------- */
 function isCloudinary(url) {
@@ -35,11 +37,14 @@ function buildCloudinarySources(url, widths, { crop = "c_fill", gravity = "g_aut
 function Home() {
   const [posterImages, setPosterImages] = useState([]);
   const [jubileeImages, setJubileeImages] = useState([]);
-  const token = (typeof window !== "undefined" && localStorage.getItem("adminToken")) || null;
+  const [events, setEvents] = useState([]);
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+
+  const { isLocked, eventData: lockedEvent } = useEventLock();
 
   /* ---------------- Fetch images ---------------- */
   useEffect(() => {
-    const headers = token ? { Authorization: `Bearer ${token}` } : undefined;
+    // Headers removed as they were unused
 
     api
       .get("/api/images/public/home-images", { params: { category: "home_announcement" } })
@@ -56,7 +61,37 @@ function Home() {
         setJubileeImages(Array.from(new Set(urls)));
       })
       .catch((err) => console.error("Error fetching memories images:", err));
-  }, [token]);
+
+    // Handle Event Fetching (Locked vs Ongoing)
+    if (isLocked && lockedEvent) {
+      // If locked, we only show the locked event
+      setEvents([lockedEvent]);
+
+    } else {
+      // Not locked: fetch all ongoing events
+      api
+        .get("/api/events/ongoing")
+        .then((res) => {
+          const eventsData = Array.isArray(res.data) ? res.data : [];
+          setEvents(eventsData);
+        })
+        .catch((err) => console.error("Error fetching events:", err));
+    }
+  }, [isLocked, lockedEvent]);
+
+  /* ---------------- Event Rotation ---------------- */
+  useEffect(() => {
+    if (events.length === 0) return;
+
+    // Rotate events every 6 seconds
+    const eventInterval = setInterval(() => {
+      setCurrentEventIndex(prev => (prev + 1) % events.length);
+    }, 6000);
+
+    return () => {
+      clearInterval(eventInterval);
+    };
+  }, [events]);
 
 
 
@@ -133,29 +168,7 @@ function Home() {
     []
   );
 
-  /* --------------- Quick nav cards data --------------- */
-  const navCards = [
-    {
-      href: "/register",
-      title: "Register Now",
-      desc: "Secure your spot for the Silver Jubilee celebration.",
-    },
-    {
-      href: "/eventflow",
-      title: "Event Schedule",
-      desc: "See the full flow of the day’s programs and timings.",
-    },
-    {
-      href: "/memories",
-      title: "Gallery",
-      desc: "Relive highlights and special moments through photos.",
-    },
-    {
-      href: "/meetourteam",
-      title: "Meet ARC Team",
-      desc: "Get to know the organizers making it all happen.",
-    },
-  ];
+
 
   /* ---------- Responsive image intent (sizes + widths) ---------- */
   // Posters: large hero-style slides; we target up to ~1600px effective width
@@ -170,17 +183,10 @@ function Home() {
 
   return (
     <>
-      {/* Background container removed */}
-
       <div className="page-content">
-
         {/* Posters - Maroon Background */}
-        <div className="w-full bg-[#8B0000] py-1 mb-1 ">
-          <section className="relative w-[100%] sm:w-[100%] mx-auto">
-            {/* <h2 className="text-l sm:text-xl md:text-2xl xl:text-3xl font-bold text-center mb-6 sm:mb-8 text-white">
-              Announcements & Posters
-            </h2> */}
-
+        <div className="w-full bg-[#8B0000] p-0 m-0">
+          <section className="relative w-full">
             <Slider {...posterSettings}>
               {posterImages.map((url, idx) => {
                 const { src, srcSet } = buildCloudinarySources(url, posterWidths, {
@@ -191,8 +197,8 @@ function Home() {
                   dpr: "dpr_auto",
                 });
                 return (
-                  <div key={idx} className="px-2 sm:px-4">
-                    <div className="rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-xl border border-[#352e2e] bg-black">
+                  <div key={idx} className="px-0">
+                    <div className="overflow-hidden bg-black">
                       <img
                         src={src}
                         srcSet={srcSet}
@@ -202,13 +208,10 @@ function Home() {
                         decoding="async"
                         className="
                           w-full 
-                          h-[200px]
-                          sm:h-[320px] 
-                          md:h-[450px] 
-                          lg:h-[550px] 
-                          xl:h-[650px]
+                          h-[250px]
+                          sm:h-[400px]
+                          md:h-[calc(100vh-90px)]
                           object-cover 
-                          rounded-xl 
                           transition-transform 
                           duration-300 
                           hover:scale-[1.01]
@@ -222,11 +225,76 @@ function Home() {
           </section>
         </div>
 
+        {/* Dynamic Events Showcase - Diagonal Split Design */}
+        {events.length > 0 && events[currentEventIndex] && (
+          <div className="w-full h-[180px] sm:h-[140px] relative overflow-hidden mb-8">
+            {/* Diagonal Split Container */}
+            <div className="absolute inset-0 flex">
+              {/* Left Side - Maroon with Event Name */}
+              <div
+                className="relative flex items-center justify-start px-6 sm:px-12 md:px-16 lg:px-20"
+                style={{
+                  background: '#8B0000',
+                  clipPath: 'polygon(0 0, 100% 0, 65% 100%, 0% 100%)',
+                  width: '70%',
+                  zIndex: 2
+                }}
+              >
+                <div className="flex items-center gap-3 sm:gap-4 text-white">
+                  {/* Icon */}
+                  <svg
+                    className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex-shrink-0"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+                  </svg>
+
+                  {/* Event Name with Animation */}
+                  <h2
+                    key={currentEventIndex}
+                    className="text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold uppercase tracking-wide animate-fade-in"
+                    style={{
+                      animation: 'fadeIn 0.5s ease-in-out'
+                    }}
+                  >
+                    {events[currentEventIndex].name}
+                  </h2>
+                </div>
+              </div>
+
+              {/* Right Side - White with Link */}
+              <div
+                className="absolute right-0 top-0 h-full flex items-center justify-end pr-6 sm:pr-12 md:pr-16 lg:pr-20"
+                style={{
+                  background: '#ffffff',
+                  width: '50%'
+                }}
+              >
+                <div className="flex items-center gap-4 sm:gap-6">
+                  {/* CTA Text and Button */}
+                  <div className="flex flex-col items-start gap-2">
+                    <p className="text-gray-700 text-xs sm:text-sm md:text-base font-medium hidden sm:block">
+                      Your Journey To Success
+                    </p>
+                    <Link
+                      to={`/event/${events[currentEventIndex].slug}/register`}
+                      className="px-4 sm:px-6 py-2 sm:py-2.5 bg-[#8B0000] text-white font-bold text-xs sm:text-sm hover:bg-[#a00002] transition-all rounded shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                    >
+                      REGISTER NOW
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
 
         {/* Quick Navigation – dark, accent top border, animated hover */}
         {/* Quick Navigation - Redesigned to match TI Style */}
         <section className="py-20 my-8 px-4">
-          <div className="max-w-[1400px] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="max-w-[1400px] mx-auto grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 href: "/register",
@@ -237,7 +305,7 @@ function Home() {
               {
                 href: "/eventflow",
                 text: "Event Schedule",
-                desc: "See the full flow of the day’s programs.",
+                desc: "See the full flow of the day's programs.",
                 icon: <FaRegCalendarAlt />
               },
               {
@@ -257,35 +325,37 @@ function Home() {
                 key={i}
                 href={item.href}
                 className={`
-                  group block p-10 rounded-[24px] transition-all duration-300 h-full flex flex-col justify-between min-h-[380px]
-                  bg-white shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-transparent
+                  group block p-4 sm:p-6 lg:p-10 rounded-[16px] sm:rounded-[24px] transition-all duration-300 h-full flex flex-col justify-between 
+                  min-h-[240px] sm:min-h-[320px] lg:min-h-[380px]
+                  bg-white shadow-[0_8px_24px_rgba(0,0,0,0.06)] sm:shadow-[0_12px_40px_rgba(0,0,0,0.08)] border border-transparent
                   hover:bg-[#FFF5F5] hover:shadow-none
                 `}
               >
                 <div>
                   {/* Icon Container */}
                   <div className={`
-                      w-11 h-11 rounded-xl flex items-center justify-center text-3xl mb-8
-                       transition-colors text-[#ca0002] 
+                      w-8 h-8 sm:w-10 sm:h-10 lg:w-11 lg:h-11 rounded-xl flex items-center justify-center 
+                      text-xl sm:text-2xl lg:text-3xl mb-3 sm:mb-6 lg:mb-8
+                      transition-colors text-[#ca0002] 
                   `}>
                     {item.icon}
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-[1.8rem] font-bold text-gray-900 mb-4 leading-tight">
+                  <h3 className="text-[1.1rem] sm:text-[1.4rem] lg:text-[1.8rem] font-bold text-gray-900 mb-2 sm:mb-3 lg:mb-4 leading-tight">
                     {item.text}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-gray-500 text-[1.05rem] leading-7 font-medium">
+                  <p className="text-gray-500 text-[0.75rem] sm:text-[0.9rem] lg:text-[1.05rem] leading-5 sm:leading-6 lg:leading-7 font-medium">
                     {item.desc}
                   </p>
                 </div>
 
                 {/* Learn More Link */}
-                <div className="flex items-center text-[#ca0002] font-bold text-[1rem] mt-8 group-hover:translate-x-1 transition-transform">
+                <div className="flex items-center text-[#ca0002] font-bold text-[0.8rem] sm:text-[0.9rem] lg:text-[1rem] mt-4 sm:mt-6 lg:mt-8 group-hover:translate-x-1 transition-transform">
                   <span className="mr-2">Learn More</span>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-[18px] sm:h-[18px] lg:w-[20px] lg:h-[20px]">
                     <path d="M5 12h14" />
                     <path d="m12 5 7 7-7 7" />
                   </svg>
