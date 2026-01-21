@@ -35,6 +35,16 @@ export default function MyRegistrations() {
         setError("Failed to load your registrations.");
       })
       .finally(() => setLoading(false));
+
+    // 3. Listen for logout from other tabs/navbar
+    const checkAuth = () => {
+      const currentAuth = localStorage.getItem("app_auth");
+      if (!currentAuth) {
+        window.location.href = "/";
+      }
+    };
+    window.addEventListener("storage", checkAuth);
+    return () => window.removeEventListener("storage", checkAuth);
   }, []);
 
   const handleLogout = () => {

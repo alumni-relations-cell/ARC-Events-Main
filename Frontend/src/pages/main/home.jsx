@@ -369,13 +369,13 @@ function Home() {
         <section className="w-full">
           {[
             {
-              title: "CREATE",
+              title: "CONNECT",
               text: "TIET offers a unique combination of courses and prepares students for higher education worldwide. Strong transdisciplinary foundation courses help students to decide their future career goals and prepare for wider possibilities. An innovative complementary project-based learning called AVANI is aimed to develop and upgrade pupils in becoming holistic individuals. Through this, students further explore future ventures to connect with global opportunities.",
               img: "https://images.unsplash.com/photo-1529400971008-f566de0e6dfc?q=80&w=2070&auto=format&fit=crop", // Globe/Connection placeholder
               layout: "left"
             },
             {
-              title: "CONNECT",
+              title: "CREATE",
               text: "TIET is situated within the campus of its mother Institution, Thapar Institute of Engineering & Technology, which has a vast infrastructure sprawling over 250 acres. TIET is one of the oldest and finest educational institutions in India offering a highly attractive structure of fees & scholarships to students. The students are also provided with all necessary facilities to develop a spirit of techno-innovation by faculty of repute.",
               img: "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop", // Campus/Infrastructure placeholder
               layout: "right"

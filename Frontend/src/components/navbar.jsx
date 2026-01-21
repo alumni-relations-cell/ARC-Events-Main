@@ -197,8 +197,8 @@ export default function ResponsiveAppBar() {
                     <IconButton
                       onClick={() => {
                         localStorage.removeItem("app_auth");
-                        setUser(null);
                         window.dispatchEvent(new Event("storage"));
+                        window.location.href = "/";
                       }}
                       size="small"
                       sx={{ color: "#d32f2f" }}
@@ -287,9 +287,8 @@ export default function ResponsiveAppBar() {
           <Button
             onClick={() => {
               localStorage.removeItem("app_auth");
-              setUser(null);
               window.dispatchEvent(new Event("storage"));
-              setMobileOpen(false);
+              window.location.href = "/";
             }}
             sx={{ color: "#d32f2f", mt: 2 }}
           >

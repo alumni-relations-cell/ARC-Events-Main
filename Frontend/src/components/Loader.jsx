@@ -10,7 +10,7 @@ export default function Loader() {
                     <div className="absolute inset-0 bg-[#ca0002] blur-3xl opacity-20 rounded-full"></div>
 
                     <img
-                        src="/assets/ti-logo-new.jpg"
+                        src="/assets/ti_logo.png"
                         alt="Loading..."
                         className="w-full h-full object-contain relative z-10"
                     />
