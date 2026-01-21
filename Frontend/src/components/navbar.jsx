@@ -134,9 +134,9 @@ export default function ResponsiveAppBar() {
         position="fixed"
         sx={{
           backgroundColor: "#ffffff",
-          boxShadow: "10px 30px 40px #ca0002)",
+          boxShadow: "0px 1px 2px #ca0002",
           zIndex: theme.zIndex.appBar,
-          borderBottom: "4px solid #ca0002 ",
+          borderBottom: "4px solid #ca0002",
         }}
       >
         <Container maxWidth="xl">
@@ -240,7 +240,7 @@ export default function ResponsiveAppBar() {
           right: 0,
           top: 0,
           height: "auto",
-          maxHeight: "360px",
+          // maxHeight: "360px", // Removed to prevent scrolling
           zIndex: theme.zIndex.appBar - 1,
           backgroundColor: "rgba(255,255,255,0.98)",
           backdropFilter: "blur(8px)",
@@ -248,14 +248,14 @@ export default function ResponsiveAppBar() {
           flexDirection: "column",
           alignItems: "center",
           px: 2,
-          pt: `100x`, // To clear the taller navbar
+          pt: "100px", // To clear the taller navbar
           pb: 4,
           gap: 2,
           transform: mobileOpen ? "translateY(0)" : "translateY(-100%)",
           opacity: mobileOpen ? 1 : 0,
           pointerEvents: mobileOpen ? "auto" : "none",
           transition: "transform 280ms cubic-bezier(.2,.9,.2,1), opacity 220ms ease",
-          overflowY: "auto",
+          // overflowY: "auto", // Removed scroll
           borderBottom: "1px solid #ddd",
         }}
       >
