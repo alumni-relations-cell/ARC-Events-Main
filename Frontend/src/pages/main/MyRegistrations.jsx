@@ -56,9 +56,9 @@ export default function MyRegistrations() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center space-y-4">
-        <Loader className="w-10 h-10 text-indigo-500 animate-spin" />
-        <p className="text-gray-400 font-medium animate-pulse">Loading profile...</p>
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center space-y-4">
+        <Loader className="w-10 h-10 text-[#ca0002] animate-spin" />
+        <p className="text-[#ca0002] font-medium animate-pulse">Loading profile...</p>
       </div>
     );
   }
@@ -209,8 +209,8 @@ export default function MyRegistrations() {
             <div className="p-6 space-y-6">
               {/* Status Banner */}
               <div className={`p-4 rounded-xl border flex justify-between items-center ${selectedReg.status === 'APPROVED' ? "bg-green-50 border-green-100 text-green-700" :
-                  selectedReg.status === 'REJECTED' ? "bg-red-50 border-red-100 text-red-700" :
-                    "bg-gray-50 border-gray-200 text-gray-600"
+                selectedReg.status === 'REJECTED' ? "bg-red-50 border-red-100 text-red-700" :
+                  "bg-gray-50 border-gray-200 text-gray-600"
                 }`}>
                 <span className="font-bold flex items-center gap-2">
                   {selectedReg.status === 'APPROVED' ? <CheckCircle size={20} /> :

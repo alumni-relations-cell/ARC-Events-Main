@@ -59,6 +59,9 @@ function AdminLayout({ children }) {
   );
 }
 
+/* ---------- Loader ---------- */
+import Loader from "./components/Loader.jsx";
+
 /* =========================================
    LOCK-AWARE ROUTE WRAPPER
    ========================================= */
@@ -78,6 +81,10 @@ function LockAwareRoute({ children }) {
       }
     }
   }, [isLocked, location.pathname, isRouteAllowed, navigate, eventData, loading]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return children;
 }

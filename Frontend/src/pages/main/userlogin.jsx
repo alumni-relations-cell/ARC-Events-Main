@@ -24,10 +24,10 @@ function LoginInner() {
   return (
     <div className="min-h-screen bg-[#F0F2F5] flex items-center justify-center p-4">
       {/* Main Card */}
-      <div className="w-full max-w-[900px] h-[500px] bg-white rounded-[24px] shadow-2xl flex overflow-hidden">
+      <div className="w-full max-w-[900px] min-h-[500px] md:h-[500px] bg-white rounded-[24px] shadow-2xl flex flex-col md:flex-row overflow-hidden">
 
         {/* Left Side: Login Content */}
-        <div className="w-full md:w-1/2 p-10 sm:p-14 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 p-10 sm:p-14 flex flex-col justify-center order-2 md:order-1">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
           <p className="text-sm text-gray-500 mb-10">
             Please login with your google account to continue.
@@ -61,7 +61,7 @@ function LoginInner() {
         </div>
 
         {/* Right Side: Image */}
-        <div className="hidden md:block w-1/2 relative bg-gray-100">
+        <div className="w-full md:w-1/2 h-48 md:h-auto relative bg-gray-100 order-1 md:order-2">
           <img
             src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop"
             alt="Thapar Campus"

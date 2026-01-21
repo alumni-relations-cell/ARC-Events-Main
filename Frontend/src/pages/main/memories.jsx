@@ -196,7 +196,7 @@ export default function PhotoGallery() {
           <p className="text-gray-500 mb-12">Select an event to view its photo gallery.</p>
 
           {isLoadingEvents ? (
-            <div className="text-[#8B0000] animate-pulse">Loading events...</div>
+            <div className="text-[#ca0002] animate-pulse">Loading events...</div>
           ) : eventsList.length === 0 ? (
             <div className="text-gray-400 text-center py-20 border border-gray-200 border-dashed rounded-[24px] bg-white">
               No events found.

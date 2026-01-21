@@ -28,7 +28,7 @@ export default function LockEntry() {
     return (
         <div style={{
             minHeight: "100vh",
-            backgroundColor: "#0a0a0a",
+            backgroundColor: "#f9fafb",
             display: "flex",
             alignItems: "center",
             justifyContent: "center"
@@ -36,8 +36,8 @@ export default function LockEntry() {
             <div style={{
                 width: "40px",
                 height: "40px",
-                border: "3px solid rgba(255,255,255,0.1)",
-                borderTopColor: "#ff6b6b",
+                border: "3px solid rgba(0,0,0,0.1)",
+                borderTopColor: "#ca0002",
                 borderRadius: "50%",
                 animation: "spin 1s linear infinite"
             }} />

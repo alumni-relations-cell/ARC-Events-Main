@@ -23,9 +23,9 @@ export default function EventList() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-        <p className="text-gray-400 font-medium animate-pulse">Loading ARC Events...</p>
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center space-y-4">
+        <div className="w-12 h-12 border-4 border-[#ca0002] border-t-transparent rounded-full animate-spin"></div>
+        <p className="text-[#ca0002] font-medium animate-pulse">Loading ARC Events...</p>
       </div>
     );
   }
@@ -86,12 +86,12 @@ export default function EventList() {
 
                   {/* Status Badge */}
                   <div className={`absolute top-4 right-4 backdrop-blur-md px-3 py-1 rounded-full flex items-center gap-2 border shadow-sm ${ev.status === 'LIVE' ? 'bg-white/90 border-white text-green-700' :
-                      ev.status === 'PAUSED' ? 'bg-white/90 border-white text-orange-600' :
-                        'bg-white/90 border-white text-red-600'
+                    ev.status === 'PAUSED' ? 'bg-white/90 border-white text-orange-600' :
+                      'bg-white/90 border-white text-red-600'
                     }`}>
                     <div className={`w-2 h-2 rounded-full animate-pulse ${ev.status === 'LIVE' ? 'bg-green-500' :
-                        ev.status === 'PAUSED' ? 'bg-orange-500' :
-                          'bg-red-500'
+                      ev.status === 'PAUSED' ? 'bg-orange-500' :
+                        'bg-red-500'
                       }`}></div>
                     <span className="text-xs font-bold tracking-wide uppercase">
                       {ev.status}

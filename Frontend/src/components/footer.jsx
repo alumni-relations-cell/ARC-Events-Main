@@ -62,14 +62,12 @@ export default function Footer() {
 
           {/* Column 3: Quick Links (Part 2 - Education/Policy Placeholders) */}
           <div>
-            <h3 className="text-xl text-transparent select-none font-normal mb-4">.</h3> {/* Spacer title */}
+            <h3 className="text-xl text-white font-normal mb-4">Our Official Web Portals  </h3>
             <ul className="space-y-2 text-sm text-gray-300">
               {[
-                { name: "Student Grievance Redressal", path: "#" },
-                { name: "Internal Complaints Committee", path: "#" },
-                { name: "TIET ADMISSIONS", path: "#" },
-                { name: "Alumni Portal", path: "#" },
-                { name: "Privacy Policy", path: "#" },
+                { name: "TIET ADMISSIONS", path: "https://www.thapar.edu/" },
+                { name: "Thaprot-G", path: "https://thaprotg.thapar.edu/" },
+                { name: "Alma Connect", path: "https://thapar.almaconnect.com/" },
               ].map((link, idx) => (
                 <li key={idx}>
                   <a href={link.path} className="hover:text-[#ca0002] flex items-start transition-colors">

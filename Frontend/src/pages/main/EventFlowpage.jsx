@@ -46,12 +46,12 @@ const TimelineView = ({ eventData, onBack }) => {
   }, [flowData]);
 
   return (
-    <div className="relative h-screen overflow-hidden bg-gray-950">
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-gray-900 via-black to-gray-900" />
+    <div className="relative h-screen overflow-hidden bg-black">
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-black via-[#1a0000] to-black" />
       {/* SnowOverlay Removed */}
 
       {/* Header */}
-      <div className="absolute top-0 left-0 w-full z-20 p-6 pt-24 bg-gradient-to-b from-gray-900 via-gray-900/90 to-transparent flex items-center gap-4">
+      <div className="absolute top-0 left-0 w-full z-20 p-6 pt-24 bg-gradient-to-b from-black via-black/90 to-transparent flex items-center gap-4">
         <button
           onClick={onBack}
           className="p-3 rounded-full bg-white/10 text-white hover:bg-white/20 backdrop-blur-md transition border border-white/10 group"
@@ -62,7 +62,7 @@ const TimelineView = ({ eventData, onBack }) => {
           <h1 className="text-2xl md:text-3xl font-bold text-white shadow-black drop-shadow-lg">
             {eventData.name}
           </h1>
-          <div className="flex items-center gap-2 text-cyan-400 text-sm font-bold uppercase tracking-widest mt-1">
+          <div className="flex items-center gap-2 text-[#ca0002] text-sm font-bold uppercase tracking-widest mt-1">
             <Clock size={14} /> Official Timeline
           </div>
         </div>
@@ -90,15 +90,15 @@ const TimelineView = ({ eventData, onBack }) => {
                 <div
                   className={`relative p-8 rounded-2xl border-l-4 backdrop-blur-xl transition-all duration-500
                     ${isActive
-                      ? "bg-gray-800/80 border-cyan-400 shadow-[0_0_40px_rgba(34,211,238,0.15)]"
-                      : "bg-gray-900/40 border-gray-700"
+                      ? "bg-black/80 border-[#ca0002] shadow-[0_0_40px_rgba(202,0,2,0.15)]"
+                      : "bg-black/40 border-gray-800"
                     }`}
                 >
                   <div className="flex gap-5">
                     {/* Icon Column */}
                     <div
                       className={`mt-1 p-3 rounded-xl h-fit shrink-0 transition-colors duration-500
-                        ${isActive ? "bg-cyan-500/20 text-cyan-300" : "bg-gray-800 text-gray-600"}`}
+                        ${isActive ? "bg-[#ca0002]/20 text-[#ca0002]" : "bg-gray-800 text-gray-600"}`}
                     >
                       <Clock size={24} />
                     </div>
@@ -115,7 +115,7 @@ const TimelineView = ({ eventData, onBack }) => {
                         <span
                           className={`text-xs font-mono px-2 py-1 rounded w-fit border whitespace-nowrap
                             ${isActive
-                              ? "bg-cyan-900/30 text-cyan-200 border-cyan-500/30"
+                              ? "bg-[#8B0000]/30 text-[#ffcece] border-[#ca0002]/30"
                               : "bg-black/40 text-gray-500 border-white/5"
                             }`}
                         >
@@ -135,9 +135,9 @@ const TimelineView = ({ eventData, onBack }) => {
             );
           })
         )}
-      </div>
+      </div >
       <style>{`.no-scrollbar::-webkit-scrollbar { display: none; } .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }`}</style>
-    </div>
+    </div >
   );
 };
 
@@ -213,9 +213,9 @@ export default function EventFlow() {
   // --- LOADING STATE ---
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-        <div className="text-cyan-400 font-bold animate-pulse">Loading Timeline...</div>
+      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center space-y-4">
+        <div className="w-12 h-12 border-4 border-[#ca0002] border-t-transparent rounded-full animate-spin"></div>
+        <div className="text-[#ca0002] font-bold animate-pulse">Loading Timeline...</div>
       </div>
     );
   }
@@ -223,7 +223,7 @@ export default function EventFlow() {
   // --- ERROR STATE (Prevents Loops) ---
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center p-6 text-center">
+      <div className="min-h-screen bg-black flex flex-col items-center justify-center p-6 text-center">
         <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
         <h3 className="text-2xl font-bold text-white mb-2">Something went wrong</h3>
         <p className="text-gray-400 mb-6">{error}</p>
@@ -244,9 +244,9 @@ export default function EventFlow() {
 
   // --- DIRECTORY VIEW ---
   return (
-    <div className="min-h-screen bg-gray-950 p-6 md:p-12 pt-24 relative overflow-hidden">
+    <div className="min-h-screen bg-black p-6 md:p-12 pt-24 relative overflow-hidden">
       {/* Background Ambience */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-indigo-900/20 to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#8B0000]/20 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Event Schedules</h1>
@@ -265,9 +265,9 @@ export default function EventFlow() {
               <div
                 key={ev._id}
                 onClick={() => handleSelectEvent(ev)}
-                className="group relative bg-gray-900 rounded-2xl border border-gray-800 overflow-hidden cursor-pointer hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/10 transition-all duration-300"
+                className="group relative bg-[#0a0a0a] rounded-2xl border border-gray-800 overflow-hidden cursor-pointer hover:border-[#ca0002]/50 hover:shadow-2xl hover:shadow-[#ca0002]/10 transition-all duration-300"
               >
-                <div className="h-56 bg-gray-800 relative overflow-hidden">
+                <div className="h-56 bg-black relative overflow-hidden">
                   {ev.posterUrl ? (
                     <img
                       src={ev.posterUrl}
@@ -279,10 +279,10 @@ export default function EventFlow() {
                       <Calendar className="text-gray-700 w-12 h-12" />
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-80" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-80" />
 
                   <div className="absolute bottom-4 left-4">
-                    <h3 className="text-xl font-bold text-white group-hover:text-cyan-400 transition">
+                    <h3 className="text-xl font-bold text-white group-hover:text-[#ca0002] transition">
                       {ev.name}
                     </h3>
                     <p className="text-xs text-gray-400 flex items-center gap-1 mt-1">
