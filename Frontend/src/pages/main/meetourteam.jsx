@@ -5,14 +5,14 @@ import DepartmentSection from '../../components/DepartmentSection';
 function App() {
   const facultyHeads = [
     {
-      name: 'Ms.Mansi Bhargava',
+      name: 'Ms. Mansi Bhargava', // Fixed spacing
       position: 'Head Of Alumni Relations',
       photo:
         'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762841017/mansi_akgkm7.jpg',
       linkedin: 'https://www.linkedin.com/in/thapar-alumni-relations-office/',
     },
     {
-      name: 'Ms.Deepika',
+      name: 'Ms. Deepika',
       position: 'Senior Associate',
       photo:
         'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762841222/deepika_z5i7st.jpg',
@@ -29,6 +29,14 @@ function App() {
       linkedin: 'https://www.linkedin.com/in/anmol-sethi-79ba03228/',
     },
     {
+      name: 'Rakshit Dhamija',
+      position: 'Outreach and Communication Head',
+      photo:
+        'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762807072/me_-_RAKSHIT_DHAMIJA_hk2ruf.jpg',
+      linkedin: 'https://www.linkedin.com/in/rakshit-dhamija-870b39286/',
+      github: 'https://github.com/Rakshit-Dhamija',
+    },
+    {
       name: 'Kushagrh Rohilla',
       position: 'Executive Head',
       photo:
@@ -42,15 +50,7 @@ function App() {
       photo:
         'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762860088/anagdd_rc4vc6.jpg',
       linkedin: 'https://www.linkedin.com/in/angad-bir-singh-45507a281/',
-      github: 'https://github.com/jatinsharma',
-    },
-    {
-      name: 'Rakshit Dhamija',
-      position: 'Outreach and Communication Head',
-      photo:
-        'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762807072/me_-_RAKSHIT_DHAMIJA_hk2ruf.jpg',
-      linkedin: 'https://www.linkedin.com/in/rakshit-dhamija-870b39286/',
-      github: 'https://github.com/Rakshit-Dhamija',
+      github: 'https://github.com/Angadbir101',
     },
   ];
 
@@ -67,6 +67,15 @@ function App() {
           linkedin: 'https://www.linkedin.com/in/garvsandha/',
           github: 'https://github.com/Garrvvvvvv',
         },
+         {
+          name: 'Ayushi Kaushal',
+          position: 'Tech Lead',
+          photo:
+            'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762841628/ayushi_jc8dul.jpg',
+          linkedin: 'https://www.linkedin.com/in/ayushi-kaushal',
+          github: 'https://github.com/AyushiK16',
+        },
+        
       ],
     },
     {
@@ -89,14 +98,7 @@ function App() {
           linkedin: 'https://www.linkedin.com/in/anjali-kumari-aa7668323/',
           github: 'https://github.com/Anjalikumari990',
         },
-        {
-          name: 'Aarushi Pulugurty',
-          position: 'Design Lead',
-          photo:
-            'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762807502/WhatsApp_Image_2025-11-11_at_02.14.37_9fd3141e_a43ihk.jpg',
-          linkedin: 'https://www.linkedin.com/in/aarushi-pulugurty-1b0675328/',
-          github: 'https://github.com/aarushipulugurty',
-        },
+       
         {
           name: 'Dishita Bansal',
           position: 'Design Lead',
@@ -172,14 +174,7 @@ function App() {
           linkedin: 'https://www.linkedin.com/in/harshil-jain-13a87731a',
           github: 'https://github.com/jainharshil34',
         },
-        {
-          name: 'Ayushi Kaushal',
-          position: 'Content Lead',
-          photo:
-            'https://res.cloudinary.com/dbl2so7ff/image/upload/v1762841628/ayushi_jc8dul.jpg',
-          linkedin: 'https://www.linkedin.com/in/ayushi-kaushal',
-          github: 'https://github.com/AyushiK16',
-        },
+       
         {
           name: 'Tishya Pandey',
           position: 'Content Lead',
@@ -193,32 +188,29 @@ function App() {
   ];
 
   return (
-    <div className="min-h-screen bg-black relative">
-      {/* softened background glows */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_15%,rgba(99,102,241,0.10),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_85%,rgba(139,92,246,0.08),transparent_60%)]" />
-
+    <div className="min-h-screen bg-gray-50 relative pt-12 pb-20">
       <div className="relative">
         <header className="text-center py-8 px-4">
-          <h1 className="mt-3 mb-3 text-4xl md:text-4xl font-bold text-white tracking-tight">
-            Our Team
+          <h1 className="mt-3 mb-3 text-4xl md:text-5xl font-bold text-[#ca0002] font-serif tracking-tight">
+            Meet Our Team
           </h1>
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10">
-            <Users className="w-4 h-4 text-white/90" />
-            <span className="text-xs font-medium text-white/80">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-gray-200 shadow-sm">
+            <Users className="w-4 h-4 text-gray-500" />
+            <span className="text-xs font-bold text-gray-600 uppercase tracking-wider">
               Alumni Relations Cell
             </span>
           </div>
         </header>
 
-        <section className="max-w-7xl mx-auto px-4 py-1">
+        <section className="max-w-[1400px] mx-auto px-4 py-6">
           {/* Faculty Heads */}
-          <div className="text-center mb-8">
-            <h2 className="text-xl md:text-2xl font-semibold text-white">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-serif">
               Faculty Heads
             </h2>
+            <div className="w-16 h-1 bg-[#ca0002] mx-auto mt-2 rounded"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-items-center mb-20">
             {facultyHeads.map((member, index) => (
               <div key={index} className="group">
                 <TeamMember {...member} size="large" />
@@ -227,12 +219,13 @@ function App() {
           </div>
 
           {/* Student Leadership */}
-          <div className="text-center mb-8">
-            <h2 className="text-xl md:text-2xl font-semibold text-white">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-serif">
               Student Leadership
             </h2>
+            <div className="w-16 h-1 bg-[#ca0002] mx-auto mt-2 rounded"></div>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 justify-items-center mb-14">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-items-center mb-20">
             {studentLeads.map((member, index) => (
               <div key={index} className="group">
                 <TeamMember {...member} size="medium" />
@@ -241,12 +234,13 @@ function App() {
           </div>
 
           {/* Departments */}
-          <div className="text-center mb-8">
-            <h2 className="text-xl md:text-2xl font-semibold text-white">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-serif">
               Departments
             </h2>
+            <div className="w-16 h-1 bg-[#ca0002] mx-auto mt-2 rounded"></div>
           </div>
-          <div className="space-y-12 mb-20">
+          <div className="space-y-16 mb-24">
             {departments.map((dept, index) => (
               <DepartmentSection key={index} {...dept} />
             ))}
@@ -254,27 +248,22 @@ function App() {
 
           {/* ✅ Group Photo Section */}
           <div className="text-center mb-16">
-            <h2 className="text-xl md:text-2xl font-semibold text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-serif mb-4">
               Our Full Team
             </h2>
-            <p className="text-gray-400 text-sm mb-4">
+            <p className="text-gray-500 text-sm mb-6 max-w-2xl mx-auto">
               A snapshot of everyone who makes the Alumni Relations Cell thrive.
             </p>
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-6xl mx-auto p-2 bg-white rounded-2xl shadow-lg border border-gray-100">
               <img
                 src="https://res.cloudinary.com/dbl2so7ff/image/upload/v1762925092/team_hokwxb.jpg"
                 alt="ARC Team Group Photo"
-                className="rounded-xl shadow-xl border border-white/10 w-full object-cover transition-transform duration-500 hover:scale-[1.02]"
+                className="rounded-xl w-full object-cover grayscale-0 hover:grayscale transition-all duration-500"
               />
             </div>
           </div>
         </section>
 
-        <footer className="text-center py-10 px-4">
-          <p className="text-gray-400 text-sm">
-            Together we build connections that last a lifetime
-          </p>
-        </footer>
       </div>
     </div>
   );

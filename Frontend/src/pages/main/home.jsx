@@ -275,7 +275,7 @@ function Home() {
                   {/* CTA Text and Button */}
                   <div className="flex flex-col items-start gap-2">
                     <p className="text-gray-700 text-xs sm:text-sm md:text-base font-medium hidden sm:block">
-                      Your Journey To Success
+                      Join us :
                     </p>
                     <Link
                       to={`/event/${events[currentEventIndex].slug}/register`}
