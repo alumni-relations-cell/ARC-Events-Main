@@ -36,68 +36,86 @@ export default function ControllerLogin() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-950 text-white p-4">
-            <div className="max-w-md w-full bg-gray-900 border border-gray-800 rounded-2xl p-8 shadow-2xl">
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
-                        Controller Portal
-                    </h1>
-                    <p className="text-gray-400 mt-2">Sign in to manage your events</p>
-                </div>
+        <div className="min-h-screen bg-[#F0F2F5] flex items-center justify-center p-4">
+            {/* Main Card */}
+            <div className="w-full max-w-[900px] min-h-[500px] md:h-[500px] bg-white rounded-[24px] shadow-2xl flex flex-col md:flex-row overflow-hidden">
+                
+                {/* Left Side: Login Content */}
+                <div className="w-full md:w-1/2 p-10 sm:p-14 flex flex-col justify-center order-2 md:order-1 relative">
+                    <div className="w-full">
+                        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                            Controller Portal
+                        </h1>
+                        <p className="text-sm text-gray-500 mb-8">
+                            Sign in to manage your events
+                        </p>
 
-                <form onSubmit={handleLogin} className="space-y-6">
-                    {err && (
-                        <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-3 rounded-lg text-center">
-                            {err}
-                        </div>
-                    )}
+                        <form onSubmit={handleLogin} className="space-y-5">
+                            {err && (
+                                <div className="bg-red-50 text-red-600 text-sm p-3 rounded-lg border border-red-100 text-center">
+                                    {err}
+                                </div>
+                            )}
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-2">Username</label>
-                        <div className="relative">
-                            <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                            <input
-                                type="text"
-                                required
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="w-full bg-gray-950 border border-gray-800 text-white rounded-lg py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-                                placeholder="Enter your username"
-                            />
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                                <div className="relative">
+                                    <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                                    <input
+                                        type="text"
+                                        required
+                                        value={username}
+                                        onChange={(e) => setUsername(e.target.value)}
+                                        className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition placeholder-gray-400"
+                                        placeholder="Enter your username"
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <div className="relative">
+                                    <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                                    <input
+                                        type="password"
+                                        required
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        className="w-full bg-gray-50 border border-gray-200 text-gray-900 rounded-xl py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition placeholder-gray-400"
+                                        placeholder="••••••••"
+                                    />
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-[#ca0002] hover:bg-[#8B000] text-white font-semibold py-3 rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed shadow-md hover:shadow-lg mt-4"
+                            >
+                                {loading ? "Signing in..." : "Sign In"}
+                                {!loading && <ArrowRight className="h-4 w-4" />}
+                            </button>
+                        </form>
+
+                        <div className="mt-8 text-center text-xs text-gray-500">
+                            Don't have an account?{" "}
+                            <Link to="/controller/signup" className="text-[#ca0002] font-semibold hover:underline">
+                                Register here
+                            </Link>
                         </div>
                     </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-2">Password</label>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                            <input
-                                type="password"
-                                required
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                className="w-full bg-gray-950 border border-gray-800 text-white rounded-lg py-2.5 pl-10 pr-4 focus:ring-2 focus:ring-indigo-500 focus:border-transparent outline-none transition"
-                                placeholder="••••••••"
-                            />
-                        </div>
-                    </div>
-
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed group"
-                    >
-                        {loading ? "Signing in..." : "Sign In"}
-                        {!loading && <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />}
-                    </button>
-                </form>
-
-                <div className="mt-6 text-center text-sm text-gray-500">
-                    Don't have an account?{" "}
-                    <Link to="/controller/signup" className="text-indigo-400 hover:text-indigo-300 font-medium hover:underline">
-                        Register here
-                    </Link>
                 </div>
+
+                {/* Right Side: Image */}
+                <div className="w-full md:w-1/2 h-48 md:h-auto relative bg-gray-100 order-1 md:order-2">
+                    <img
+                        src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?q=80&w=2070&auto=format&fit=crop"
+                        alt="Campus"
+                        className="absolute inset-0 w-full h-full object-cover filter brightness-[0.9]"
+                    />
+                    <div className="absolute inset-0 bg-indigo-900/10 mix-blend-multiply" />
+                </div>
+
             </div>
         </div>
     );
